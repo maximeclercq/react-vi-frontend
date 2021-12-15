@@ -1,11 +1,12 @@
 import './App.css';
 import React, {useEffect, useState} from "react";
-import {Routes, Route} from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
-// import {AfficherCarte} from "./main";
 import {SVGMap} from "react-svg-map";
 import World from "@svg-maps/world";
 import "react-svg-map/lib/index.css";
+import {queryGov} from "./services/queryServices";
+import GovComponent from "./component/govComponent/govComponent";
 
 
 function AfficherCarte() {
@@ -26,31 +27,10 @@ class AfficherCarteClass extends React.Component {
     }
 }
 
-
-function fetchData(url) {
-      new Promise((res, rej) => {
-        res(1); // pareil que res(1);
-    }).then(val => {
-        console.log(val);
-    });
-
-
-    return fetch(url, {
-        mode: 'no-cors',
-    }).then((val) => {
-        console.log(val);
-        return val; // pour la passer à un autre then()
-        // throw new Error("Ceci est une erreur");
-    }).catch(err => {
-        console.error(err);
-    })
-}
-
-
 function TestData() {
     // const [loading, items] = useFetch('http://localhost:3300/gov/france/mobile/comments?_limit=200');
     // console.log(items);
-    fetchData('http://localhost:3300/gov/france/mobile');
+    console.log(queryGov("france", "broadband"));
     return null;
 }
 
@@ -106,11 +86,29 @@ function ReactStandardAffichage() {
 
 export default function App() {
     return (
-        <Routes>
-            <Route path="/"/>
-            <Route path="gov" element={<> <AfficherCarteClass/> <TestData/> </>}/>
-            <Route path="ong" element={<AfficherCarte/>}/>
-            <Route path="home" element={<ReactStandardAffichage/>}/>
-        </Routes>
+        <div>
+            <BrowserRouter>
+                <nav className="navbar navbar-expand navbar-dark bg-dark">
+                    <div className="navbar-nav">
+                        <Link to="/home" className="nav-item nav-link">Home</Link>
+                        <Link to="/gov" className="nav-item nav-link">Government</Link>
+                        <Link to="/ong" className="nav-item nav-link">ONG</Link>
+                    </div>
+                </nav>
+                <Routes>
+                    <Route
+                        path="/"
+                       render={() => {
+                           return (
+                               <Navigate to="/home" />
+                           )
+                       }
+                    }/>
+                    <Route exact path="gov" element={<GovComponent/>}/>
+                    <Route exact path="ong" element={<AfficherCarte/>}/>
+                    <Route exact path="home" element={<ReactStandardAffichage/>}/>
+                </Routes>
+            </BrowserRouter>
+        </div>
     )
 }
