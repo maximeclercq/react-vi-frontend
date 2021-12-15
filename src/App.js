@@ -9,59 +9,6 @@ import {queryGov} from "./services/queryServices";
 import GovComponent from "./component/govComponent/govComponent";
 
 
-function AfficherCarte() {
-    return (
-        <SVGMap map={World}/>
-    );
-}
-
-class AfficherCarteClass extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <SVGMap map={World}/>
-        )
-    }
-}
-
-function TestData() {
-    // const [loading, items] = useFetch('http://localhost:3300/gov/france/mobile/comments?_limit=200');
-    // console.log(items);
-    console.log(queryGov("france", "broadband"));
-    return null;
-}
-
-// function useFetch(url) {
-//     const [state, setState] = useState({
-//         items: [],
-//         loading: true
-//     })
-//
-//     useEffect(() => {
-//         (async () => {
-//             const response = await fetch(url);
-//             const responseData = await response.json();
-//             if (response.ok) {
-//                 setState({
-//                     items: responseData,
-//                     loading: false
-//                 })
-//             } else {
-//                 alert(JSON.stringify(responseData));
-//                 setState(s => ({...s, loading: false}));
-//             }
-//         })();
-//     }, [])
-//
-//     return [
-//         state.loading,
-//         state.items
-//     ]
-// }
-
 function ReactStandardAffichage() {
     return (
         <div className="App">
@@ -105,7 +52,7 @@ export default function App() {
                        }
                     }/>
                     <Route exact path="gov" element={<GovComponent/>}/>
-                    <Route exact path="ong" element={<AfficherCarte/>}/>
+                    <Route exact path="ong" element={<ReactStandardAffichage/>}/>
                     <Route exact path="home" element={<ReactStandardAffichage/>}/>
                 </Routes>
             </BrowserRouter>

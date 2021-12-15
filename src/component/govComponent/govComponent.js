@@ -1,9 +1,11 @@
-import { React, useEffect, useState, useCallback } from 'react';
+import {React, useEffect, useState, useCallback} from 'react';
 import {SVGMap} from "react-svg-map";
 import World from "@svg-maps/world";
 import "react-svg-map/lib/index.css";
 import {queryGov} from "../../services/queryServices";
-import {dataToArray, yearsToArray} from "../../helpers/helper";
+import {broadbandToArray, dataToArray, mobileToArray, shareToArray, yearsToArray} from "../../helpers/helper";
+import GovModalGraph from "./gov-modal-graph";
+
 
 export default function GovComponent() {
     const [broadBand, setBroadband] = useState([]);
@@ -14,27 +16,29 @@ export default function GovComponent() {
     const [location, setLocation] = useState("");
 
     useEffect(() => {
-        if (location !== ""){
-            queryGov(location, "broadband").then(data => {
+        if (location !== "") {
+            queryGov(location).then(data => {
                 setYears(yearsToArray(data));
-                setBroadband(dataToArray(data, "broadBand"));
+                setBroadband(broadbandToArray(data));
+                setMobile(mobileToArray(data));
+                setShare(shareToArray(data))
             });
-
-            queryGov(location, "mobile").then(data => {
-                setMobile(dataToArray(data, "mobile"));
-            });
-
-            queryGov(location, "share").then(data => {
-                setShare(dataToArray(data, "share"));
-                console.log(years)
-                console.log(share);
-            });
+            console.log("years : " + years);
+            console.log("mobile : " + mobile);
+            console.log("share : " + share);
+            console.log("broadBand : " + broadBand);
         }
     }, [location]);
 
-
     return (
-        <SVGMap map={World} onLocationClick={(location) => setLocation(location.target.getAttribute('name'))}/>
-
+        <>
+            <SVGMap map={World} onLocationClick={(location) => setLocation(location.target.getAttribute('name'))}/>
+            <GovModalGraph/>
+        </>
     );
 }
+
+function reset(state) {
+
+}
+

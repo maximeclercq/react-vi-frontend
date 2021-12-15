@@ -22,6 +22,18 @@ export function yearsToArray(data) {
     return data !== undefined ? data["year"] : [];
 }
 
+export function mobileToArray(data) {
+    return data !== undefined ? data["mobile"] : [];
+}
+
+export function broadbandToArray(data) {
+    return data !== undefined ? data["broadband"] : [];
+}
+
+export function shareToArray(data) {
+    return data !== undefined ? data["share"] : [];
+}
+
 export function dataToArray(data, dataName){
     return data !== undefined ? data[dataName] : [];
 }
