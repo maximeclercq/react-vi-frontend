@@ -1,44 +1,94 @@
-import {React, useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SVGMap} from "react-svg-map";
 import World from "@svg-maps/world";
 import "react-svg-map/lib/index.css";
 import {queryGov} from "../../services/queryServices";
-import {broadbandToArray, dataToArray, mobileToArray, shareToArray, yearsToArray} from "../../helpers/helper";
-import GovModalGraph from "./gov-modal-graph";
+import {broadbandToArray, mobileToArray, shareToArray, yearsToArray} from "../../helpers/helper";
+import ReactModal from "react-modal";
+import Plot from "react-plotly.js";
 
+function GovComponent () {
 
-export default function GovComponent() {
-    const [broadBand, setBroadband] = useState([]);
-    const [mobile, setMobile] = useState([]);
-    const [share, setShare] = useState([]);
-    const [years, setYears] = useState([]);
-
+    const [showModal, setShowModal] = useState(false);
     const [location, setLocation] = useState("");
+    const [years, setYears] = useState([]);
+    const [mobileData, setMobileData] = useState([]);
+    const [broadbandData, setBroadbandData] = useState([]);
+    const [shareData, setShareData] = useState([]);
 
-    useEffect(() => {
+    const defaultRange = {
+        yaxis: {
+            autorange: true
+        },
+        xaxis: {
+            autorange: true
+        }
+    };
+
+    function handleOpenModal() {
+        setShowModal(true);
+    }
+
+    function handleCloseModal() {
+        setLocation("");
+        setShowModal(false);
+    }
+
+    useEffect( () => {
+        console.log(location);
         if (location !== "") {
             queryGov(location).then(data => {
                 setYears(yearsToArray(data));
-                setBroadband(broadbandToArray(data));
-                setMobile(mobileToArray(data));
-                setShare(shareToArray(data))
+                setBroadbandData(broadbandToArray(data));
+                setMobileData(mobileToArray(data));
+                setShareData(shareToArray(data));
             });
-            console.log("years : " + years);
-            console.log("mobile : " + mobile);
-            console.log("share : " + share);
-            console.log("broadBand : " + broadBand);
         }
     }, [location]);
 
+    useEffect( () => {
+        if (location !== ""){
+            handleOpenModal();
+        }
+    }, [years, shareData, mobileData, broadbandData])
+
     return (
-        <>
+        <div>
             <SVGMap map={World} onLocationClick={(location) => setLocation(location.target.getAttribute('name'))}/>
-            <GovModalGraph/>
-        </>
-    );
+            <ReactModal
+                isOpen={showModal}
+                contentLabel="Minimal Modal Example">
+                <Plot
+                    data = {[
+                        {
+                            x:years,
+                            y:mobileData,
+                            type: 'scatter',
+                        },
+                        {
+                            x:years,
+                            y:broadbandData,
+                            type: 'scatter',
+                        },
+                        {
+                            x:years,
+                            y:shareData,
+                            type: 'scatter',
+                        }
+                    ]}
+                    layout={{
+                        autosize: true,
+                        ...defaultRange,
+                        uirevision: 'true'
+                    }}
+                    useResizeHandler={true}
+                    style={{width: "100%", height: "auto"}}
+                />
+                <button onClick={handleCloseModal}>Close window</button>
+            </ReactModal>
+        </div>
+        );
 }
 
-function reset(state) {
-
-}
+export default GovComponent;
 

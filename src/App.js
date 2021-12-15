@@ -1,11 +1,8 @@
 import './App.css';
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes, Link, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
-import {SVGMap} from "react-svg-map";
-import World from "@svg-maps/world";
 import "react-svg-map/lib/index.css";
-import {queryGov} from "./services/queryServices";
 import GovComponent from "./component/govComponent/govComponent";
 
 
