@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Plot from 'react-plotly.js';
 
 
-
 export default function GovChart({ data }) {
 
     const defaultRange = {

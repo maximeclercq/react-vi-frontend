@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes, Link, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
 import "react-svg-map/lib/index.css";
 import GovComponent from "./component/govComponent/govComponent";
+import OngComponent from "./component/ong-component/ong-component";
 
 
 function ReactStandardAffichage() {
@@ -49,7 +50,7 @@ export default function App() {
                        }
                     }/>
                     <Route exact path="gov" element={<GovComponent/>}/>
-                    <Route exact path="ong" element={<ReactStandardAffichage/>}/>
+                    <Route exact path="ong" element={<OngComponent/>}/>
                     <Route exact path="home" element={<ReactStandardAffichage/>}/>
                 </Routes>
             </BrowserRouter>
