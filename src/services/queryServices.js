@@ -12,3 +12,14 @@ export async function queryGov(country) {
     });
     return handleResponse(response);
 }
+
+export async function queryOng(year) {
+    console.log(BACKEND_URL)
+    const response = await fetch(`${BACKEND_URL}/ong/${year}`, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-store',
+        headers: {'Content-Type':  'application/json'}
+    });
+    return handleResponse(response);
+}
