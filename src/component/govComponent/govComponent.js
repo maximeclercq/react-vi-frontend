@@ -64,22 +64,27 @@ function GovComponent () {
                             x:years,
                             y:mobileData,
                             type: 'scatter',
+                            name: 'Mobile Data Users (Per 100 Users)'
+
                         },
                         {
                             x:years,
                             y:broadbandData,
                             type: 'scatter',
+                            name: 'Broadband Penetration'
                         },
                         {
                             x:years,
                             y:shareData,
                             type: 'scatter',
+                            name: 'Share of Internet user (%)'
                         }
                     ]}
                     layout={{
                         autosize: true,
                         ...defaultRange,
-                        uirevision: 'true'
+                        uirevision: 'true',
+                        title: 'Internet Usage for '+location
                     }}
                     useResizeHandler={true}
                     style={{width: "100%", height: "auto"}}
